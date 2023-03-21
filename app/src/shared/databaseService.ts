@@ -16,3 +16,7 @@ export const getAllItems = async () => {
 export const getItem = async (id: string) => {
   return await db.findOne<DBUser>({ _id: id });
 };
+
+export const getUser = async (username: string) => {
+  return await db.findOne<DBUser>({ username });
+};

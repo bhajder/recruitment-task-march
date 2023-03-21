@@ -1,9 +1,10 @@
-export interface User {
-  name: string;
+import { AuthPayload } from "./Auth";
+
+export interface User extends AuthPayload {
   about: string;
   email: string;
   dateOfBirthTimestamp: number;
-  password: string;
+  isEditor: boolean;
 }
 
 export interface DBUser extends User {

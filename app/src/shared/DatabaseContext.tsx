@@ -31,15 +31,15 @@ export const DatabaseContextProvider = ({ children }: PropsWithChildren) => {
   const [currentItem, setCurrentItem] = useState<DBUser>();
   const { id: currentItemParamId } = useParams();
 
-  const handleSaveItem = (item: User) => {
-    saveItem(item);
-    return handleGetAllItems();
+  const handleSaveItem = async (item: User) => {
+    await saveItem(item);
+    await handleGetAllItems();
   };
 
-  const handleUpdateItem = (item: DBUser) => {
-    updateItem(item);
+  const handleUpdateItem = async (item: DBUser) => {
     setCurrentItem(item);
-    return handleGetAllItems();
+    await updateItem(item);
+    await handleGetAllItems();
   };
 
   const handleGetAllItems = async () => {

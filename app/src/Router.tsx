@@ -8,10 +8,7 @@ import {
 import LoginPage from "./pages/LoginPage";
 import CreateUserPage from "./pages/CreateUserPage";
 import ListPage from "./pages/ListPage";
-
-const useAuth = () => {
-  return { isAuthenticated: true };
-};
+import useAuth from "./shared/useAuth";
 
 const NonAuthGuard = () => {
   const { isAuthenticated } = useAuth();
@@ -35,6 +32,7 @@ export const AppRouter = () => (
   <BrowserRouter>
     <Routes>
       <Route path={Paths.base} element={<NonAuthGuard />}>
+        <Route index element={<Navigate to={Paths.login} />} />
         <Route path={Paths.login} element={<LoginPage />} />
       </Route>
       <Route path={Paths.panel} element={<AuthGuard />}>
@@ -42,6 +40,7 @@ export const AppRouter = () => (
         <Route path={Paths.list} element={<ListPage />} />
         <Route path={Paths.createUser} element={<CreateUserPage />} />
       </Route>
+      <Route path={"/*"} element={<Navigate to={Paths.base} />} />
     </Routes>
   </BrowserRouter>
 );
