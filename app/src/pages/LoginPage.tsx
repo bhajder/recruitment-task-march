@@ -10,7 +10,7 @@ const LoginPage = () => {
       sx={{ height: "100vh" }}
     >
       <Paper variant="outlined" sx={{ p: 4, borderRadius: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 800 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
           LOG IN
         </Typography>
         <Typography variant="body1" mb={4}>

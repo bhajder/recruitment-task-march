@@ -6,10 +6,10 @@ import React, {
 } from "react";
 import { useParams } from "react-router-dom";
 import { User, DBUser } from "../models/User";
-import { getAllItems, getItem, saveItem, updateItem } from "./databaseService";
+import { useDatabaseService } from "./databaseService";
 
 const defaultHandler = () => {
-  throw Error("cannot find DatabaseContext Provider!");
+  throw Error("Cannot find DatabaseContext Provider");
 };
 
 interface DatabaseContextType {
@@ -29,6 +29,7 @@ const DatabaseContext = React.createContext<DatabaseContextType>({
 export const DatabaseContextProvider = ({ children }: PropsWithChildren) => {
   const [allItems, setAllItems] = useState<DBUser[]>([]);
   const [currentItem, setCurrentItem] = useState<DBUser>();
+  const { getAllItems, getItem, saveItem, updateItem } = useDatabaseService();
   const { id: currentItemParamId } = useParams();
 
   const handleSaveItem = async (item: User) => {

@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
 import { CssBaseline } from "@mui/material";
 import "./index.css";
-import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-
 import reportWebVitals from "./reportWebVitals";
 import { AppRouter } from "./Router";
 import { DatabaseContextProvider } from "./shared/DatabaseContext";
+import { AuthContextProvider } from "./shared/AuthContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,8 +15,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <CssBaseline />
+
     <DatabaseContextProvider>
-      <AppRouter />
+      <AuthContextProvider>
+        <AppRouter />
+      </AuthContextProvider>
     </DatabaseContextProvider>
   </React.StrictMode>
 );

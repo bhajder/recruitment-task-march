@@ -8,16 +8,17 @@ import {
 import LoginPage from "./pages/LoginPage";
 import CreateUserPage from "./pages/CreateUserPage";
 import ListPage from "./pages/ListPage";
-import useAuth from "./shared/useAuth";
+import { AuthContextProvider, useAuthContext } from "./shared/AuthContext";
+import { DatabaseContextProvider } from "./shared/DatabaseContext";
 
 const NonAuthGuard = () => {
-  const { isAuthenticated } = useAuth();
-  return !isAuthenticated ? <Outlet /> : <Navigate to="/panel" />;
+  const { isAuthenticated } = useAuthContext();
+  return !isAuthenticated ? <Outlet /> : <Navigate to={Paths.panel} />;
 };
 
 const AuthGuard = () => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  const { isAuthenticated } = useAuthContext();
+  return isAuthenticated ? <Outlet /> : <Navigate to={"/" + Paths.login} />;
 };
 
 export const Paths = {
@@ -40,7 +41,7 @@ export const AppRouter = () => (
         <Route path={Paths.list} element={<ListPage />} />
         <Route path={Paths.createUser} element={<CreateUserPage />} />
       </Route>
-      <Route path={"/*"} element={<Navigate to={Paths.base} />} />
+      <Route path={"*"} element={<Navigate to="/" />} />
     </Routes>
   </BrowserRouter>
 );
