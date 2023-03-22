@@ -1,5 +1,7 @@
+import DashboardTemplate from "../templates/DashboardTemplate";
+
 const CreatePage = () => {
-  return <div>CreatePage</div>;
+  return <DashboardTemplate title="Create User">CreatePage</DashboardTemplate>;
 };
 
 export default CreatePage;

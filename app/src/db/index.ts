@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 const usersDB = Datastore.create("users.db"); // stored in browsers' indexedDB
 
 usersDB.on("load", async (db) => {
+  db.ensureIndex({ fieldName: "username", unique: true });
   const user = await db.findOne({ username: "admin" });
   if (user) return;
 

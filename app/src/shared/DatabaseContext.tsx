@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useParams } from "react-router-dom";
 import { User, DBUser } from "../models/User";
 import { useDatabaseService } from "./databaseService";
 
@@ -14,32 +13,20 @@ const defaultHandler = () => {
 
 interface DatabaseContextType {
   allItems: DBUser[];
-  currentItem?: DBUser;
   handleSaveItem: (item: User) => void;
-  handleUpdateItem: (item: DBUser) => void;
 }
 
 const DatabaseContext = React.createContext<DatabaseContextType>({
   allItems: [],
-  currentItem: undefined,
   handleSaveItem: defaultHandler,
-  handleUpdateItem: defaultHandler,
 });
 
 export const DatabaseContextProvider = ({ children }: PropsWithChildren) => {
   const [allItems, setAllItems] = useState<DBUser[]>([]);
-  const [currentItem, setCurrentItem] = useState<DBUser>();
-  const { getAllItems, getItem, saveItem, updateItem } = useDatabaseService();
-  const { id: currentItemParamId } = useParams();
+  const { getAllItems, saveItem } = useDatabaseService();
 
   const handleSaveItem = async (item: User) => {
     await saveItem(item);
-    await handleGetAllItems();
-  };
-
-  const handleUpdateItem = async (item: DBUser) => {
-    setCurrentItem(item);
-    await updateItem(item);
     await handleGetAllItems();
   };
 
@@ -52,17 +39,6 @@ export const DatabaseContextProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const getCurrentItem = async () => {
-    if (!currentItemParamId) return;
-    const item = await getItem(currentItemParamId);
-    if (!item) return;
-    setCurrentItem(item);
-  };
-
-  useEffect(() => {
-    getCurrentItem();
-  }, [currentItemParamId]);
-
   useEffect(() => {
     handleGetAllItems();
   }, []);
@@ -71,9 +47,7 @@ export const DatabaseContextProvider = ({ children }: PropsWithChildren) => {
     <DatabaseContext.Provider
       value={{
         allItems,
-        currentItem,
         handleSaveItem,
-        handleUpdateItem,
       }}
     >
       {children}

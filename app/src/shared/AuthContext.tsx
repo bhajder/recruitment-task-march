@@ -4,6 +4,7 @@ import { AuthPayload, AuthPersistance } from "../models/Auth";
 import React from "react";
 import { useDatabaseService } from "./databaseService";
 import { useLocalStorageService } from "./localStorageService";
+import { DBUser } from "../models/User";
 
 const defaultHandler = () => {
   throw Error("Cannot find AuthContext Provider");
@@ -11,12 +12,14 @@ const defaultHandler = () => {
 
 interface DatabaseContextType {
   isAuthenticated: boolean;
+  me?: DBUser;
   login: ({ username, password }: AuthPayload) => void;
   logout: () => void;
 }
 
 const AuthContext = React.createContext<DatabaseContextType>({
   isAuthenticated: false,
+  me: undefined,
   login: defaultHandler,
   logout: defaultHandler,
 });
@@ -25,8 +28,11 @@ const localStorageAuthKey = "bhrtAuth";
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { getUser } = useDatabaseService();
-  const { getItem, removeItem, setItem } = useLocalStorageService();
+  const [me, setMe] = useState<DBUser>();
+
+  const { getUser, getItem: getDBItem } = useDatabaseService();
+  const { getItem, removeItem, setItem } =
+    useLocalStorageService<AuthPersistance>();
 
   const login = async ({ username, password }: AuthPayload) => {
     const user = await getUser(username);
@@ -35,6 +41,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) return logout(); // TODO: handle notification
 
+    setMe(user);
     authenticate({ id: user._id, hash: user.password });
   };
 
@@ -48,16 +55,24 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     setIsAuthenticated(false);
   };
 
+  const getMe = async (id: string) => {
+    const user = await getDBItem(id);
+    if (!user) return;
+    setMe(user);
+  };
+
   useEffect(() => {
     const authItem = getItem(localStorageAuthKey);
     if (!authItem) return setIsAuthenticated(false);
-    if (authItem) return setIsAuthenticated(true);
+    setIsAuthenticated(true);
+    getMe(authItem.id);
   }, []);
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        me,
         login,
         logout,
       }}
