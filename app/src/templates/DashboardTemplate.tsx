@@ -1,13 +1,12 @@
 import { Logout } from "@mui/icons-material";
 import {
   AppBar,
-  Button,
   Container,
   IconButton,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { PropsWithChildren, ReactNode } from "react";
+import { ReactNode } from "react";
 import { useAuthContext } from "../shared/AuthContext";
 
 interface DashboardTemplateProps {

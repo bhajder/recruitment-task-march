@@ -17,7 +17,11 @@ const NonAuthGuard = () => {
 
 const AuthGuard = () => {
   const { isAuthenticated } = useAuthContext();
-  return isAuthenticated ? <Outlet /> : <Navigate to={"/" + Paths.login} />;
+  return isAuthenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate to={joinPaths("base", "login")} />
+  );
 };
 
 export const Paths = {
@@ -26,6 +30,19 @@ export const Paths = {
   panel: "panel",
   list: "list",
   createUser: "create",
+} as const;
+
+type Path = keyof typeof Paths;
+type PathJoin<
+  A extends Path,
+  B extends Path
+> = `/${typeof Paths[A]}/${typeof Paths[B]}`;
+
+export const joinPaths = <A extends Path, B extends Exclude<Path, A>>(
+  a: A,
+  b: B
+): PathJoin<A, B> => {
+  return `/${Paths[a]}/${Paths[b]}`;
 };
 
 export const AppRouter = () => (
