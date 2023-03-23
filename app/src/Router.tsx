@@ -17,11 +17,7 @@ const NonAuthGuard = () => {
 
 const AuthGuard = () => {
   const { isAuthenticated } = useAuthContext();
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to={joinPaths("base", "login")} />
-  );
+  return isAuthenticated ? <Outlet /> : <Navigate to={"/" + Paths.login} />;
 };
 
 export const Paths = {

@@ -1,6 +1,7 @@
 import { Logout } from "@mui/icons-material";
 import {
   AppBar,
+  Box,
   Container,
   IconButton,
   Toolbar,
@@ -8,6 +9,7 @@ import {
 } from "@mui/material";
 import { ReactNode } from "react";
 import { useAuthContext } from "../shared/AuthContext";
+import ViewLoader from "../components/ViewLoader";
 
 interface DashboardTemplateProps {
   title: string;
@@ -15,7 +17,10 @@ interface DashboardTemplateProps {
 }
 
 const DashboardTemplate = ({ title, children }: DashboardTemplateProps) => {
-  const { logout } = useAuthContext();
+  const { logout, isLoading } = useAuthContext();
+
+  if (isLoading) return <ViewLoader fullHeight />;
+
   return (
     <Container>
       <AppBar position="static" sx={{ borderRadius: 1, my: 2 }}>
