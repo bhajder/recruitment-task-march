@@ -79,8 +79,8 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     dispatch({ type: "START_LOADING", key: "createAccount" });
     const hash = await bcrypt.hash(newUser.password, 10);
     try {
-      showSuccessSnackbar("User created successfully!");
       await handleSaveItem({ ...newUser, password: hash });
+      showSuccessSnackbar("User created successfully!");
     } catch (err) {
       showErrorSnackbar();
     }

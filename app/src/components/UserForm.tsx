@@ -14,6 +14,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { User } from "../models/User";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { parseISO } from "date-fns";
 
 interface UserPayload extends User {
   repeatPassword: string;
@@ -145,7 +146,15 @@ const UserForm = () => {
           control={control}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker {...field} label="Date of Birth" />
+              <DatePicker
+                {...field}
+                onChange={(date) => {
+                  if (!date) return;
+                  field.onChange(new Date(date).getTime());
+                }}
+                value={new Date(field.value)}
+                label="Date of Birth"
+              />
             </LocalizationProvider>
           )}
         />
