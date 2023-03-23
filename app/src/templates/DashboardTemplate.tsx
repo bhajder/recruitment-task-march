@@ -12,14 +12,14 @@ import { useAuthContext } from "../shared/AuthContext";
 import ViewLoader from "../components/ViewLoader";
 
 interface DashboardTemplateProps {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 }
 
 const DashboardTemplate = ({ title, children }: DashboardTemplateProps) => {
-  const { logout, isLoading } = useAuthContext();
+  const { logout, isLoading, me } = useAuthContext();
 
-  if (isLoading) return <ViewLoader fullHeight />;
+  if (!me && isLoading) return <ViewLoader fullHeight />;
 
   return (
     <Container>

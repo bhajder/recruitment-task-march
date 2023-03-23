@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { AuthPayload } from "../models/Auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +11,7 @@ const loginValidationSchema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const { login } = useAuthContext();
+  const { login, isLoading } = useAuthContext();
   const {
     control,
     handleSubmit,
@@ -60,8 +60,16 @@ const LoginForm = () => {
             />
           )}
         />
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+        >
           Log In
+          {isLoading && (
+            <CircularProgress size={16} sx={{ color: "#fff", ml: 2 }} />
+          )}
         </Button>
       </Box>
     </form>

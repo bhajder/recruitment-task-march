@@ -1,5 +1,5 @@
 import Datastore from "nedb-promises";
-import { DBUser, User } from "../models/User";
+import { User } from "../models/User";
 import bcrypt from "bcryptjs";
 import { getRandomDate } from "../shared/helpers";
 
@@ -22,7 +22,7 @@ usersDB.on("load", async (db) => {
     ac facilisis ante feugiat. Phasellus posuere imperdiet sem vel ornare.`,
     dateOfBirthTimestamp: getRandomDate(),
     email: "admin@admin.com",
-    isEditor: true,
+    isSpecial: true,
   } as User);
 });
 
