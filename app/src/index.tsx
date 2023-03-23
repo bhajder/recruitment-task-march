@@ -6,8 +6,11 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/700.css";
 import reportWebVitals from "./reportWebVitals";
 import { AppRouter } from "./Router";
-import { DatabaseContextProvider } from "./shared/DatabaseContext";
-import { AuthContextProvider } from "./shared/AuthContext";
+import { DatabaseContextProvider } from "./context/DatabaseContext";
+import { AuthContextProvider } from "./context/AuthContext";
+import { SnackbarProvider } from "notistack";
+import { NotificationContextProvider } from "./context/NotificationContext";
+import NotificationSnackbar from "./components/NotificationSnackbar";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,11 +18,19 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <DatabaseContextProvider>
-      <AuthContextProvider>
-        <AppRouter />
-      </AuthContextProvider>
-    </DatabaseContextProvider>
+    <SnackbarProvider
+      content={(key, message) => (
+        <NotificationSnackbar id={key} message={message} />
+      )}
+    >
+      <NotificationContextProvider>
+        <DatabaseContextProvider>
+          <AuthContextProvider>
+            <AppRouter />
+          </AuthContextProvider>
+        </DatabaseContextProvider>
+      </NotificationContextProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 );
 

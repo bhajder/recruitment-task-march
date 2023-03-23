@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ReactNode } from "react";
-import { useAuthContext } from "../shared/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import ViewLoader from "../components/ViewLoader";
 
 interface DashboardTemplateProps {

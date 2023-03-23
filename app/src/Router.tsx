@@ -8,7 +8,7 @@ import {
 import LoginPage from "./pages/LoginPage";
 import CreateUserPage from "./pages/CreateUserPage";
 import ListPage from "./pages/ListPage";
-import { useAuthContext } from "./shared/AuthContext";
+import { useAuthContext } from "./context/AuthContext";
 
 const NonAuthGuard = () => {
   const { isAuthenticated } = useAuthContext();

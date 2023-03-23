@@ -6,8 +6,8 @@ import React, {
   useState,
 } from "react";
 import { User, DBUser } from "../models/User";
-import { useDatabaseService } from "./databaseService";
-import loadingReducer from "./loadingReducer";
+import { useDatabaseService } from "../services/databaseService";
+import loadingReducer from "../reducers/loadingReducer";
 
 const defaultHandler = () => {
   throw Error("Cannot find DatabaseContext Provider");

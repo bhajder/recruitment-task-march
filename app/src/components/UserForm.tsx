@@ -12,7 +12,7 @@ import * as yup from "yup";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { User } from "../models/User";
-import { useAuthContext } from "../shared/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface UserPayload extends User {

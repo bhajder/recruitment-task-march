@@ -3,7 +3,7 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { AuthPayload } from "../models/Auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useAuthContext } from "../shared/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 
 const loginValidationSchema = yup.object().shape({
   username: yup.string().required("Username is required"),

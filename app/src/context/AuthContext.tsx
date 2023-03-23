@@ -8,11 +8,12 @@ import {
 import bcrypt from "bcryptjs";
 import { AuthPayload, AuthPersistance } from "../models/Auth";
 import React from "react";
-import { useDatabaseService } from "./databaseService";
-import { useLocalStorageService } from "./localStorageService";
+import { useDatabaseService } from "../services/databaseService";
+import { useLocalStorageService } from "../services/localStorageService";
 import { DBUser, User } from "../models/User";
-import loadingReducer from "./loadingReducer";
+import loadingReducer from "../reducers/loadingReducer";
 import { useDatabaseContext } from "./DatabaseContext";
+import { useNotificationContext } from "./NotificationContext";
 
 const defaultHandler = () => {
   throw Error("Cannot find AuthContext Provider");
@@ -49,33 +50,40 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   const [isLoading, dispatch] = useReducer(loadingReducer, {});
 
+  const { showErrorSnackbar, showSuccessSnackbar } = useNotificationContext();
+
   const login = async ({ username, password }: AuthPayload) => {
     dispatch({ type: "START_LOADING", key: "login" });
     const user = await getUser(username);
     if (!user) {
-      console.log("nouser");
+      showErrorSnackbar("No user found with provided username");
       dispatch({ type: "STOP_LOADING", key: "login" });
-      return; //TODO: handle notification
+      return;
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      console.log("invalid");
-      logout(); // TODO: handle notification
+      logout();
+      showErrorSnackbar("Provided password for this user is invalid");
       dispatch({ type: "STOP_LOADING", key: "login" });
       return;
     }
 
     setMe(user);
     authenticate({ id: user._id, hash: user.password });
-
+    showSuccessSnackbar("Logged in successfully!");
     dispatch({ type: "STOP_LOADING", key: "login" });
   };
 
   const createAccount = async (newUser: User) => {
     dispatch({ type: "START_LOADING", key: "createAccount" });
     const hash = await bcrypt.hash(newUser.password, 10);
-    await handleSaveItem({ ...newUser, password: hash });
+    try {
+      showSuccessSnackbar("User created successfully!");
+      await handleSaveItem({ ...newUser, password: hash });
+    } catch (err) {
+      showErrorSnackbar();
+    }
     dispatch({ type: "STOP_LOADING", key: "createAccount" });
   };
 

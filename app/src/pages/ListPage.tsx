@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { joinPaths } from "../Router";
-import { useAuthContext } from "../shared/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import DashboardTemplate from "../templates/DashboardTemplate";
 import DataTable from "../components/DataTable";
-import { useDatabaseContext } from "../shared/DatabaseContext";
+import { useDatabaseContext } from "../context/DatabaseContext";
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Fragment } from "react";
-import { formatDate, getAge } from "../shared/helpers";
+import { formatDate, getAge } from "../helpers";
 import { StarOutlineTwoTone } from "@mui/icons-material";
 
 const ListPage = () => {

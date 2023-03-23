@@ -1,7 +1,7 @@
 import Datastore from "nedb-promises";
 import { User } from "../models/User";
 import bcrypt from "bcryptjs";
-import { getRandomDate } from "../shared/helpers";
+import { getRandomDate } from "../helpers";
 
 const usersDB = Datastore.create("users.db"); // stored in browsers' indexedDB
 
